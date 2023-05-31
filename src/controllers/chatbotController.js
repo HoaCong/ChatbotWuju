@@ -4,7 +4,7 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 let getHomePage = (req, res) => {
-  return res.send("xin chao");
+  return res.send("Hello");
 };
 
 let getWebhook = (req, res) => {
@@ -19,10 +19,10 @@ let getWebhook = (req, res) => {
     if (mode === "subscribe" && token === VERIFY_TOKEN) {
       // Respond with the challenge token from the request
       console.log("WEBHOOK_VERIFIED");
-      return res.status(200).send(challenge);
+      res.status(200).send(challenge);
     } else {
       // Respond with '403 Forbidden' if verify tokens do not match
-      return res.sendStatus(403);
+      res.sendStatus(403);
     }
   }
 };
@@ -49,11 +49,11 @@ let postWebhook = (req, res) => {
       }
     });
     // Returns a '200 OK' response to all requests
-    return res.status(200).send("EVENT_RECEIVED");
+    res.status(200).send("EVENT_RECEIVED");
     // Determine which webhooks were triggered and get sender PSIDs and locale, message content and more.
   } else {
     // Return a '404 Not Found' if event is not from a page subscription
-    return res.sendStatus(404);
+    res.sendStatus(404);
   }
 };
 
@@ -70,7 +70,7 @@ function handleMessage(sender_psid, received_message) {
   }
 
   // Sends the response message
-  return callSendAPI(sender_psid, response);
+  callSendAPI(sender_psid, response);
 }
 // Handles messaging_postbacks events
 function handlePostback(sender_psid, received_postback) {}
@@ -96,10 +96,8 @@ function callSendAPI(sender_psid, response) {
     (err, res, body) => {
       if (!err) {
         console.log("message sent!");
-        return res.send("message sent!");
       } else {
         console.error("Unable to send message:" + err);
-        return res.send("error sent!");
       }
     }
   );
