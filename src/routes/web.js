@@ -4,7 +4,7 @@ let router = express.Router();
 
 let routerWeb = (app) => {
   router.get("/", chatbotController.getHomePage);
-  router.get("/messaging-webhook", chatbotController.getWebhook);
+  router.get("/webhook", chatbotController.getWebhook);
   router.post("/webhook", chatbotController.postWebhook);
 
   return app.use("/", router);
