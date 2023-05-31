@@ -31,7 +31,7 @@ let getWebhook = (req, res) => {
 
 let postWebhook = (req, res) => {
   let body = req.body;
-
+  console.log("Hòa, haha");
   if (body.object === "page") {
     body.entry.forEach((entry) => {
       // Gets the body of the webhook event
