@@ -8,6 +8,9 @@ let getHomePage = (req, res) => {
 };
 
 let getWebhook = (req, res) => {
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
   // Parse the query params
   let mode = req.query["hub.mode"];
   let token = req.query["hub.verify_token"];
@@ -30,6 +33,9 @@ let getWebhook = (req, res) => {
 };
 
 let postWebhook = (req, res) => {
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
   let body = req.body;
   console.log("Hòa, haha");
   if (body.object === "page") {
