@@ -8,25 +8,32 @@ let getHomePage = (req, res) => {
 };
 
 let getWebhook = (req, res) => {
-  // Parse the query params
-  let mode = req.query["hub.mode"];
-  let token = req.query["hub.verify_token"];
-  let challenge = req.query["hub.challenge"];
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
 
-  // Check if a token and mode is in the query string of the request
-  if (mode && token) {
-    // Check the mode and token sent is correct
-    if (mode === "subscribe" && token === VERIFY_TOKEN) {
-      // Respond with the challenge token from the request
-      console.log("WEBHOOK_VERIFIED");
-      res.status(200).send(challenge);
-    } else {
-      // Respond with '403 Forbidden' if verify tokens do not match
-      res.sendStatus(403);
+  // Gửi dữ liệu tức thì từ máy chủ tới máy khách
+  setInterval(() => {
+    // Parse the query params
+    let mode = req.query["hub.mode"];
+    let token = req.query["hub.verify_token"];
+    let challenge = req.query["hub.challenge"];
+
+    // Check if a token and mode is in the query string of the request
+    if (mode && token) {
+      // Check the mode and token sent is correct
+      if (mode === "subscribe" && token === VERIFY_TOKEN) {
+        // Respond with the challenge token from the request
+        console.log("WEBHOOK_VERIFIED");
+        res.status(200).send(challenge);
+      } else {
+        // Respond with '403 Forbidden' if verify tokens do not match
+        res.sendStatus(403);
+      }
     }
-  }
-
-  res.json({ message: "getWebhook" });
+    res.json({ message: "getWebhook" });
+  }, 1000);
 };
 
 let postWebhook = (req, res) => {
