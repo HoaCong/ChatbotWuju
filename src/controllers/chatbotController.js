@@ -32,12 +32,10 @@ let getWebhook = (req, res) => {
 
 let postWebhook = (req, res) => {
   let body = req.body;
-  console.log("Hòa, haha");
   if (body.object === "page") {
     body.entry.forEach((entry) => {
       // Gets the body of the webhook event
       let webhook_event = entry.messaging[0];
-      console.log(webhook_event);
 
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
@@ -108,7 +106,6 @@ function callSendAPI(sender_psid, response) {
       }
     }
   );
-  console.log("Đã send messages");
 }
 
 module.exports = {
