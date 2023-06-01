@@ -32,8 +32,8 @@ let getWebhook = (req, res) => {
         res.sendStatus(403);
       }
     }
-    res.json({ message: "getWebhook" });
   }, 1000);
+  res.json({ message: "getWebhook" });
 };
 
 let postWebhook = (req, res) => {
