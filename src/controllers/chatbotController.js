@@ -4,35 +4,28 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
 let getHomePage = (req, res) => {
-  res.json({ message: "version" + new Date() });
+  res.json({ message: "Hello, World!" });
 };
 
 let getWebhook = (req, res) => {
-  res.setHeader("Content-Type", "text/event-stream");
-  res.setHeader("Cache-Control", "no-cache");
-  res.setHeader("Connection", "keep-alive");
-  res.flushHeaders();
+  // Parse the query params
+  let mode = req.query["hub.mode"];
+  let token = req.query["hub.verify_token"];
+  let challenge = req.query["hub.challenge"];
 
-  // Gửi dữ liệu tức thì từ máy chủ tới máy khách
-  setInterval(() => {
-    // Parse the query params
-    let mode = req.query["hub.mode"];
-    let token = req.query["hub.verify_token"];
-    let challenge = req.query["hub.challenge"];
-
-    // Check if a token and mode is in the query string of the request
-    if (mode && token) {
-      // Check the mode and token sent is correct
-      if (mode === "subscribe" && token === VERIFY_TOKEN) {
-        // Respond with the challenge token from the request
-        console.log("WEBHOOK_VERIFIED");
-        res.status(200).send(challenge);
-      } else {
-        // Respond with '403 Forbidden' if verify tokens do not match
-        res.sendStatus(403);
-      }
+  // Check if a token and mode is in the query string of the request
+  if (mode && token) {
+    // Check the mode and token sent is correct
+    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      // Respond with the challenge token from the request
+      console.log("WEBHOOK_VERIFIED");
+      res.status(200).send(challenge);
+    } else {
+      // Respond with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
     }
-  }, 1000);
+  }
+
   res.json({ message: "getWebhook" });
 };
 
