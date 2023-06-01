@@ -108,6 +108,7 @@ function callSendAPI(sender_psid, response) {
       }
     }
   );
+  console.log("Đã send messages");
 }
 
 module.exports = {
